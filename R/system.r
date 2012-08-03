@@ -1,6 +1,11 @@
-# @param arg a vector of command arguments.
-# @param env a named character vector.  Will be quoted
+#' Runs an R system command with the given arguments and environment.
+#' @param cmd the command to run
+#' @param args a vector of command arguments.
+#' @param env a named character vector.  Will be quoted
+#' @param ... additional arguments to system2
+#' @export
 system_check <- function(cmd, args = character(), env = character(), ...) {
+
   with_env(env, {
     res <- system2(cmd, args = args, ...)
   })
@@ -9,16 +14,4 @@ system_check <- function(cmd, args = character(), env = character(), ...) {
   }
   
   invisible(TRUE)
-}
-
-R <- function(options, path = tempdir(), ...) {
-  r_path <- file.path(R.home("bin"), "R")
-  
-  env <- c(
-    "R_ENVIRON_USER" = tempfile(),
-    "LC_ALL" = "C", 
-    "R_LIBS" = paste(.libPaths(), collapse = .Platform$path.sep),
-    "CYGWIN" = "nodosfilewarning")
-   
-  in_dir(path, system_check(r_path, options, env, ...))
 }

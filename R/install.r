@@ -18,7 +18,6 @@
 #' @family package installation
 #' @seealso \code{\link{with_debug}} to install packages with debugging flags
 #'   set.
-#' @importFrom utils install.packages
 install <- function(pkg = NULL, reload = TRUE, quick = FALSE, args = NULL) {
   pkg <- as.package(pkg)
   message("Installing ", pkg$package)
@@ -39,23 +38,6 @@ install <- function(pkg = NULL, reload = TRUE, quick = FALSE, args = NULL) {
 
   if (reload) reload(pkg)
   invisible(TRUE)
-}
-
-install_deps <- function(pkg = NULL) {
-  pkg <- as.package(pkg)
-  deps <- c(parse_deps(pkg$depends), parse_deps(pkg$imports), 
-    parse_deps(pkg$linkingto))
-  
-  # Remove packages that are already installed
-  not.installed <- function(x) length(find.package(x, quiet = TRUE)) == 0
-  deps <- Filter(not.installed, deps)
-  
-  if (length(deps) == 0) return(invisible())
-  
-  message("Installing dependencies for ", pkg$package, ":\n", 
-    paste(deps, collapse = ", "))
-  install.packages(deps)
-  invisible(deps)
 }
 
 #' Temporarily set debugging compilation flags.

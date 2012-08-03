@@ -15,28 +15,41 @@
 #' @param cran if \code{TRUE} (the default), check with CRAN.
 #' @param args An optional character vector of additional command line
 #'   arguments to be passed to \code{R CMD check}.
+#' @param bundle whether to bundle dependencies in a separate library
+#'        as opposed to using the system-wide libraries.
 #' @export
-check <- function(pkg = NULL, document = TRUE, cleanup = TRUE,
-  cran = TRUE, args = NULL) {
+check <- function(
+                  pkg = NULL,
+                  document = TRUE,
+                  bundle = TRUE,
+                  cleanup = TRUE,
+                  cran = TRUE,
+                  args = NULL
+                  ) {
   pkg <- as.package(pkg)
   
-  if (document) {
+  if (document)
     document(pkg, clean = TRUE)
-  }
+
+  if(bundle)
+    bundle(pkg)
+
   message("Checking ", pkg$package)
 
   built_path <- build(pkg, tempdir())  
   on.exit(unlink(built_path))
 
+
   opts <- "--timings"
   if (cran)
     opts <- c(opts, "--as-cran")
+
   opts <- paste(paste(opts, collapse = " "), paste(args, collapse = " "))
   
-  R(paste("CMD check ", shQuote(built_path), " ", opts, sep = ""), tempdir())
+  r_args <- paste("CMD check ", shQuote(built_path), " ", opts, sep = "")
+  R(args=r_args, path=tempdir(), lib=bundle_library(pkg))
   
-  check_path <- file.path(tempdir(), paste(pkg$package, ".Rcheck", 
-    sep = ""))
+  check_path <- file.path(tempdir(), paste(pkg$package, ".Rcheck", sep = ""))
   if (cleanup) {
     unlink(check_path, recursive = TRUE)    
   } else {

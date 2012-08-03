@@ -2,8 +2,8 @@
 \alias{check}
 \title{Build and check a package, cleaning up automatically on success.}
 \usage{
-  check(pkg = NULL, document = TRUE, cleanup = TRUE,
-    cran = TRUE, args = NULL)
+  check(pkg = NULL, document = TRUE, bundle = TRUE,
+    cleanup = TRUE, cran = TRUE, args = NULL)
 }
 \arguments{
   \item{pkg}{package description, can be path or package
@@ -23,6 +23,10 @@
   \item{args}{An optional character vector of additional
   command line arguments to be passed to \code{R CMD
   check}.}
+
+  \item{bundle}{whether to bundle dependencies in a
+  separate library as opposed to using the system-wide
+  libraries.}
 }
 \description{
   \code{check} automatically builds a package before using

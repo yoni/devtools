@@ -27,7 +27,7 @@ install_bitbucket(c("testrepo", "testrepo2")
 }
 \seealso{
   Other package installation: \code{\link{install}},
-  \code{\link{install_github}},
+  \code{\link{install_deps}}, \code{\link{install_github}},
   \code{\link{install_gitorious}},
   \code{\link{install_url}}, \code{\link{install_version}}
 }
