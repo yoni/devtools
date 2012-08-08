@@ -37,7 +37,7 @@ install_deps <- function(pkg = NULL, lib=NULL, repos=getOption('repos')) {
   message("Installing dependencies for ", pkg$package, " into lib ", lib, ":\n",
     paste(deps, collapse = ", "))
 
-  install.packages(pkgs=deps, lib=lib, repos=repos)
+  install.packages(pkgs=deps, lib=lib, repos=repos, type="both")
 
   invisible(deps)
 }
